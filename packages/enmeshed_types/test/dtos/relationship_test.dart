@@ -99,6 +99,7 @@ void main() {
         );
       },
     );
+<<<<<<< HEAD
     test(
       'is correctly converted with property "peerDeletionInfo"',
       () {
@@ -197,6 +198,8 @@ void main() {
         );
       },
     );
+=======
+>>>>>>> main
   });
 
   group('RelationshipDTO fromJson', () {
@@ -289,6 +292,7 @@ void main() {
             ],
           ),
         ),
+<<<<<<< HEAD
       );
     });
 
@@ -383,6 +387,8 @@ void main() {
             ],
           ),
         ),
+=======
+>>>>>>> main
       );
     });
   });

@@ -79,6 +79,7 @@ class _SplashScreenState extends State<SplashScreen> {
         clientId: const String.fromEnvironment('app_clientId'),
         clientSecret: const String.fromEnvironment('app_clientSecret'),
         useAppleSandbox: const bool.fromEnvironment('app_useAppleSandbox'),
+        databaseFolder: './database',
       ),
     );
     GetIt.I.registerSingletonAsync<EnmeshedRuntime>(() async => runtime.run());
@@ -103,12 +104,15 @@ class _SplashScreenState extends State<SplashScreen> {
     });
 
     final accounts = await GetIt.I.get<EnmeshedRuntime>().accountServices.getAccounts();
+    final accountsNotInDeletion = await getAccountsNotInDeletion();
     if (accounts.isEmpty) {
       router.go('/onboarding');
+    } else if (accountsNotInDeletion.isEmpty) {
+      router.go('/onboarding?skipIntroduction=true');
     } else {
-      accounts.sort((a, b) => b.lastAccessedAt?.compareTo(a.lastAccessedAt ?? '') ?? 0);
+      accountsNotInDeletion.sort((a, b) => b.lastAccessedAt?.compareTo(a.lastAccessedAt ?? '') ?? 0);
 
-      final account = accounts.first;
+      final account = accountsNotInDeletion.first;
 
       await GetIt.I.get<EnmeshedRuntime>().selectAccount(account.id);
 

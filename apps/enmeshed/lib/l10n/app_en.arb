@@ -37,6 +37,7 @@
   "error_createAttribute": "No new information could be created.",
   "error_succeedAttribute": "The entry could not be updated.",
   "error_deleteAttribute": "The entry could not be deleted.",
+  "error_changeFavoriteRepositoryAttribute": "The attribute could not be favored.",
   "favorites": "Favorites",
   "tryAgain": "Try again",
   "title": "Title",
@@ -129,7 +130,8 @@
   "profiles_copiedAddressToClipboard": "The profile-address has been copied to the clipboard.",
   "profiles_settings_title": "Settings",
   "profiles_settings_subtitle": "Manage your connected devices and profile settings or back up your data here.",
-  "profiles_settings_editProfile": "Edit or delete profile",
+  "profiles_settings_editProfile": "Edit profile",
+  "profiles_settings_deleteProfile": "Delete profile",
   "profiles_settings_connectedDevices": "Manage connected devices",
   "profiles_createNew": "Create new profile",
   "profiles_lastUsed": "Last used",
@@ -146,12 +148,63 @@
       }
     }
   },
+  "profile_or_identity_deletion": "Would you like to remove your profile from this device only (i.e. log the device out of the profile) or delete your entire profile with all stored data and documents?",
+  "profile_or_identity_deletion_oneDevice": "This profile is only available via this device. For this reason, no distinction is made between \"Remove profile from device\" and \"Delete profile\". You can only delete your entire profile.",
+  "identity_delete_cancel": "No, cancel",
+  "identity_delete_confirm": "Yes, delete",
+  "identity_delete_confirmation": "Would you like to delete the \"{profileName}\" profile and all the data, contacts and documents it contains? It will be removed from all your connected devices ({devices})",
+  "@identity_delete_confirmation": {
+    "placeholders": {
+      "profileName": {
+        "type": "String"
+      },
+      "devices": {
+        "type": "num"
+      }
+    }
+  },
+  "identities_in_deletion": "Profiles in deletion",
+  "identity_restore_cancel": "No, cancel",
+  "identity_restore_confirm": "Yes, activate",
+  "identity_restore_description": "Would you like to restore and activate the profile?",
+  "identity_restore_title": "Your Profile is in deletion.",
+  "identity_reactivate_description": "You can still restore and activate your profile \"{profileName}\" until {deletionDate}.",
+  "@identity_reactivate_description": {
+    "placeholders": {
+      "profileName": {
+        "type": "String"
+      },
+      "deletionDate": {
+        "type": "DateTime",
+        "format": "yMMMd"
+      }
+    }
+  },
+  "identity_delete_activated_and_switchedToProfile": "Profile \"{profileName}\" activated and selected.",
+  "@identity_delete_activated_and_switchedToProfile": {
+    "placeholders": {
+      "profileName": {
+        "type": "String"
+      }
+    }
+  },
+  "identity_restore": "Activate Profile",
+  "identity_delete_at": "Will be deleted at {deletionDate}",
+  "@identity_delete_at": {
+    "placeholders": {
+      "deletionDate": {
+        "type": "DateTime",
+        "format": "yMMMd"
+      }
+    }
+  },
   "profile_edit": "Edit profile",
   "profile_edit_inProgress": "Saving profile",
   "profile_name": "Profile name",
   "profile_delete": "Delete profile",
+  "profile_delete_device": "Remove Profile from the Device",
   "profile_delete_cancel": "No, cancel",
-  "profile_delete_confirm": "Yes, delete",
+  "profile_delete_confirm": "Yes, remove",
   "profile_delete_inProgress": "Deleting the profile.",
   "profile_delete_success": "The profile has been deleted.\nPlease select another profile to continue.",
   "profile_delete_success_noProfilesAvailable": "The profile has been deleted. All your data has been removed from this device.",
@@ -230,7 +283,7 @@
   "deviceInfo_removeRemainingDevice_title": "You cannot disconnect the device from your profile as it is the only connected one. How to delete your profile:",
   "deviceInfo_removeConnectedDevice_title": "To remove the device from the list of connected devices:",
   "deviceInfo_removeDevice_successful": "The device \"{deviceName}\" has been removed from your device list.",
-  "@devices_removeDevice_successful": {
+  "@deviceInfo_removeDevice_successful": {
     "placeholders": {
       "deviceName": {
         "type": "String"
@@ -260,9 +313,12 @@
   "contact_request": "Contact Request",
   "contacts_empty": "Add contacts",
   "contacts_emptyDescription": "Connect with contacts to share or receive data and documents.",
-  "contacts_pending": "The contact has not yet accepted the relationship.",
-  "contacts_terminated": "The relationship with the contact has been terminated.",
-  "contacts_deletionProposed": "The relationship to the contact has been proposed for deletion.",
+  "contacts_addContact": "Add contact",
+  "contacts_unknown": "Contact name not available",
+  "contacts_notYetRequested": "not yet requested",
+  "contacts_pending": "not yet accepted",
+  "contacts_terminated": "Contact terminated the relationship",
+  "contacts_deletionProposed": "Relationship permanently terminated",
   "contacts_delete_title": "Delete contact \"{contactName}\"?",
   "@contacts_delete_title": {
     "placeholders": {
@@ -271,7 +327,11 @@
       }
     }
   },
+  "contacts_delete_title_unknown": "Delete contact?",
   "contacts_delete_description": "All shared and received information will be deleted except for documents. The contact is informed and asked to delete this information. No more messages can be sent or received.",
+  "contacts_revoke_title": "Revoke contact request?",
+  "contacts_revoke_description": "All information and content of the enquiry will be deleted. No messages or documents can be sent or received.",
+  "contacts_revoke_action": "Revoke",
   "contacts_delete_deleteContact": "Delete Contact",
   "contactDetail_connectedSince": "Contact since {since}",
   "@contactDetail_connectedSince": {
@@ -281,10 +341,21 @@
       }
     }
   },
+  "contactDetail_requestedAt": "requested at {since}",
+  "@contactDetail_requestedAt": {
+    "placeholders": {
+      "since": {
+        "type": "String"
+      }
+    }
+  },
+  "contactDetail_notAcceptedYet": "Contact still unconfirmed",
   "contactDetail_entry": "Entry",
   "contactDetail_addEntry": "Add",
   "contactDetail_selectOrCreateEntryMessage": "Share an entry you have already created with your contact or create a new one.",
   "contactDetail_selectEntryMessage": "Share an entry you have already created with your contact.",
+  "contactDetail_removeFromFavorites": "Remove from favorites",
+  "contactDetail_addToFavorites": "Add to favorites",
   "contactDetail_sendMessage": "Send Message",
   "contactDetail_requestCertificate": "Request Certificate",
   "contactDetail_requestCertificate_subject": "Subject",
@@ -390,6 +461,7 @@
   "personalData_details_deleteEntry": "Delete entry?",
   "personalData_details_attributeSuccessfullySucceeded": "The entry has been updated.",
   "personalData_details_attributeSuccessfullyDeleted": "The entry has been deleted.",
+  "personalData_details_attributeSuccessfullyFavored": "The entry was successfully favored.",
   "personalData_details_confirmAttributeDeletion": "Yes, delete",
   "personalData_details_cancelDeletion": "No, cancel",
   "personalData_details_warningOnSuccession": "The newly assigned value already exists. This could lead to confusion.",

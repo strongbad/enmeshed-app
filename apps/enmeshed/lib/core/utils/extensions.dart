@@ -8,6 +8,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../themes/custom_color.dart';
+import '../constants.dart';
 
 extension AppLocalizationsExtension on BuildContext {
   AppLocalizations get l10n => AppLocalizations.of(this)!;
@@ -51,8 +52,16 @@ extension Separated<T extends Widget> on Iterable<T> {
   }
 }
 
+extension IsUnknown on IdentityDVO {
+  bool get isUnknown => name == unknownContactName;
+}
+
 extension Toggle<T> on Set<T> {
   void toggle(T value) {
     contains(value) ? remove(value) : add(value);
   }
+}
+
+extension IsDefaultRepositoryAttribute on LocalAttributeDVO {
+  bool get isDefaultRepositoryAttribute => this is RepositoryAttributeDVO && ((this as RepositoryAttributeDVO).isDefault ?? false);
 }

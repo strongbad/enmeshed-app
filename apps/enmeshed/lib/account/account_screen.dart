@@ -17,7 +17,6 @@ class AccountScreen extends StatefulWidget {
   final String location;
   final MailboxFilterController mailboxFilterController;
   final Widget child;
-  final bool showSecondTab;
 
   const AccountScreen({
     required this.accountId,
@@ -25,7 +24,6 @@ class AccountScreen extends StatefulWidget {
     required this.location,
     required this.mailboxFilterController,
     required this.child,
-    required this.showSecondTab,
     super.key,
   });
 
@@ -37,6 +35,7 @@ class _AccountScreenState extends State<AccountScreen> with SingleTickerProvider
   final List<StreamSubscription<void>> _subscriptions = [];
 
   late final TabController _tabController;
+  List<LocalAccountDTO> _accountsInDeletion = [];
 
   LocalAccountDTO? _account;
   int _numberOfOpenContactRequests = 0;
@@ -79,15 +78,6 @@ class _AccountScreenState extends State<AccountScreen> with SingleTickerProvider
   }
 
   @override
-  void didUpdateWidget(covariant AccountScreen oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    if (oldWidget.showSecondTab != widget.showSecondTab) {
-      _tabController.animateTo(widget.showSecondTab ? 1 : 0);
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: AppDrawer(accountId: widget.accountId, accountName: _account?.name ?? '', activateHints: _activateHints),
@@ -100,46 +90,21 @@ class _AccountScreenState extends State<AccountScreen> with SingleTickerProvider
             child: IconButton(
               padding: EdgeInsets.zero,
               onPressed: () => context.push('/profiles'),
-              icon: AutoLoadingProfilePicture(
-                accountId: widget.accountId,
-                profileName: _account?.name ?? '',
-                radius: 16,
-                circleAvatarColor: Theme.of(context).colorScheme.primaryContainer,
+              icon: Badge(
+                isLabelVisible: _accountsInDeletion.isNotEmpty,
+                child: AutoLoadingProfilePicture(
+                  accountId: widget.accountId,
+                  profileName: _account?.name ?? '',
+                  radius: 16,
+                  circleAvatarColor: Theme.of(context).colorScheme.primaryContainer,
+                ),
               ),
             ),
           ),
         ],
         scrolledUnderElevation: switch (_selectedIndex) { 2 => 0, _ => 3 },
-        notificationPredicate: (notification) => switch (_selectedIndex) { 1 || 3 => notification.depth == 1, _ => notification.depth == 0 },
+        notificationPredicate: (notification) => switch (_selectedIndex) { 3 => notification.depth == 1, _ => notification.depth == 0 },
         bottom: switch (_selectedIndex) {
-          1 => TabBar(
-              controller: _tabController,
-              indicatorSize: TabBarIndicatorSize.tab,
-              tabs: [
-                Tab(child: Text(context.l10n.contacts, style: Theme.of(context).textTheme.titleSmall)),
-                Tab(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(context.l10n.home_contactRequests, style: Theme.of(context).textTheme.titleSmall),
-                      if (_numberOfOpenContactRequests > 0) ...[
-                        Gaps.w8,
-                        CircleAvatar(
-                          backgroundColor: Theme.of(context).colorScheme.error,
-                          radius: 8,
-                          child: Center(
-                            child: Text(
-                              _numberOfOpenContactRequests.toString(),
-                              style: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).colorScheme.onPrimary),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
-              ],
-            ),
           3 => TabBar(
               controller: _tabController,
               indicatorSize: TabBarIndicatorSize.tab,
@@ -269,7 +234,13 @@ class _AccountScreenState extends State<AccountScreen> with SingleTickerProvider
 
   Future<void> _loadAccount() async {
     final account = await GetIt.I.get<EnmeshedRuntime>().accountServices.getAccount(widget.accountId);
-    if (mounted) setState(() => _account = account);
+    final accountsInDeletion = await getAccountsInDeletion();
+    if (mounted) {
+      setState(() {
+        _account = account;
+        _accountsInDeletion = accountsInDeletion;
+      });
+    }
   }
 
   Future<void> _reloadContactRequests() async {

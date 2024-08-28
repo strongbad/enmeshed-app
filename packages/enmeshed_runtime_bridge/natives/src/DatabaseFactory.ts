@@ -1,9 +1,13 @@
+import { ILokiJsDatabaseFactory } from "@js-soft/docdb-access-loki";
 import { ILogger } from "@js-soft/logging-abstractions";
+<<<<<<< HEAD
 import { INativeDatabaseFactory } from "@js-soft/native-abstractions";
+=======
+>>>>>>> main
 import loki from "lokijs";
 import { FileAccess } from "./FileAccess";
 
-export class DatabaseFactory implements INativeDatabaseFactory {
+export class DatabaseFactory implements ILokiJsDatabaseFactory {
   public constructor(
     private fileAccess: FileAccess,
     private readonly logger: ILogger

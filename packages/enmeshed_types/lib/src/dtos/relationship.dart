@@ -2,7 +2,10 @@ import 'package:equatable/equatable.dart';
 
 import '../contents/contents.dart';
 import 'identity.dart';
+<<<<<<< HEAD
 import 'peer_deletion_info.dart';
+=======
+>>>>>>> main
 import 'relationship_template.dart';
 
 enum RelationshipStatus { Pending, Active, Rejected, Revoked, Terminated, DeletionProposed }
@@ -26,7 +29,10 @@ class RelationshipDTO extends Equatable {
   final RelationshipStatus status;
   final String peer;
   final IdentityDTO peerIdentity;
+<<<<<<< HEAD
   final PeerDeletionInfo? peerDeletionInfo;
+=======
+>>>>>>> main
   final RelationshipCreationContentDerivation creationContent;
   final List<RelationshipAuditLogEntryDTO> auditLog;
 
@@ -36,7 +42,10 @@ class RelationshipDTO extends Equatable {
     required this.status,
     required this.peer,
     required this.peerIdentity,
+<<<<<<< HEAD
     this.peerDeletionInfo,
+=======
+>>>>>>> main
     required this.creationContent,
     required this.auditLog,
   });
@@ -47,7 +56,10 @@ class RelationshipDTO extends Equatable {
         status: RelationshipStatus.values.byName(json['status']),
         peer: json['peer'],
         peerIdentity: IdentityDTO.fromJson(json['peerIdentity']),
+<<<<<<< HEAD
         peerDeletionInfo: PeerDeletionInfo.fromJsonNullable(json['peerDeletionInfo']),
+=======
+>>>>>>> main
         creationContent: RelationshipCreationContentDerivation.fromJson(json['creationContent']),
         auditLog: List<RelationshipAuditLogEntryDTO>.from(json['auditLog'].map((x) => RelationshipAuditLogEntryDTO.fromJson(x))),
       );
@@ -58,7 +70,10 @@ class RelationshipDTO extends Equatable {
         'status': status.name,
         'peer': peer,
         'peerIdentity': peerIdentity.toJson(),
+<<<<<<< HEAD
         if (peerDeletionInfo != null) 'peerDeletionInfo': peerDeletionInfo?.toJson(),
+=======
+>>>>>>> main
         'creationContent': creationContent.toJson(),
         'auditLog': auditLog.map((e) => e.toJson()).toList(),
       };
