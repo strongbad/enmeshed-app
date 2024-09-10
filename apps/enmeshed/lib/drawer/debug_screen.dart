@@ -242,6 +242,7 @@ class _PushDebuggerState extends State<_PushDebugger> {
 
                       await session.transportServices.account.enableAutoSync();
                     },
+                    tooltip: 'create datawallet modification',
                   ),
                 ),
                 const Align(alignment: Alignment.centerRight, child: CloseButton()),
