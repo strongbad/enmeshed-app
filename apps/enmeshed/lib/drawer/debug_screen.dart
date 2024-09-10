@@ -228,6 +228,22 @@ class _PushDebuggerState extends State<_PushDebugger> {
               alignment: Alignment.center,
               children: [
                 Text('Push Debugger', style: Theme.of(context).textTheme.labelLarge),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: IconButton(
+                    icon: const Icon(Icons.upload),
+                    onPressed: () async {
+                      final session = GetIt.I.get<EnmeshedRuntime>().currentSession;
+
+                      await session.transportServices.account.disableAutoSync();
+
+                      final setting = await session.consumptionServices.settings.createSetting(key: 'key', value: {'key': 'value'});
+                      await session.consumptionServices.settings.deleteSetting(setting.value.id);
+
+                      await session.transportServices.account.enableAutoSync();
+                    },
+                  ),
+                ),
                 const Align(alignment: Alignment.centerRight, child: CloseButton()),
               ],
             ),
