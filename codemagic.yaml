@@ -11,8 +11,19 @@ workflows:
       - name: Set up local build version
         script: |
           cd apps/enmeshed
-          # Update existing version in pubspec.yaml
           sed -i.bak 's/^version:.*$/version: 1.0.0+1/' pubspec.yaml
+
+      - name: Create development certificate
+        script: |
+          # Create a temporary keychain
+          security create-keychain -p "" build.keychain
+          security list-keychains -s build.keychain
+          security default-keychain -s build.keychain
+          security unlock-keychain -p "" build.keychain
+          
+          # Create a self-signed certificate
+          security create-certificate-signing-request -s "Development" -k build.keychain
+          security find-identity -p codesigning build.keychain
 
       - name: Install melos
         script: dart pub global activate melos
@@ -25,11 +36,26 @@ workflows:
           cd apps/enmeshed/ios
           pod install
 
+      - name: Create export options plist
+        script: |
+          cat >> ~/export_options.plist << EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+              <key>method</key>
+              <string>ad-hoc</string>
+              <key>signingStyle</key>
+              <string>automatic</string>
+          </dict>
+          </plist>
+          EOF
+
       - name: Flutter build ipa
         script: |
           cd apps/enmeshed
           flutter build ipa \
-            --no-codesign \
+            --export-options-plist=~/export_options.plist \
             --dart-define="app_baseUrl=$app_baseUrl" \
             --dart-define="app_clientId=$app_clientId" \
             --dart-define="app_clientSecret=$app_clientSecret"
