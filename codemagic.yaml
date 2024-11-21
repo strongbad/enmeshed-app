@@ -36,7 +36,7 @@ workflows:
         script: |
           flutter build ipa --release \
            --build-name=${CM_TAG/#enmeshed-v/} \
-           --export-options-plist=/Users/builder/export_options.plist \
+#           --export-options-plist=/Users/builder/export_options.plist \
            --dart-define="app_baseUrl=$app_baseUrl" \
            --dart-define="app_clientId=$app_clientId" \
            --dart-define="app_clientSecret=$app_clientSecret"
