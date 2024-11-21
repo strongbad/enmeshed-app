@@ -16,9 +16,9 @@ workflows:
       groups:
         - config-secrets
         - webhook-secrets
-      ios_signing:
-        distribution_type: app_store
-        bundle_identifier: eu.enmeshed.app
+#      ios_signing:
+#        distribution_type: app_store
+#        bundle_identifier: eu.enmeshed.app
       flutter: stable
       xcode: 16.0
       cocoapods: default
