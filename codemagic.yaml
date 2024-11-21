@@ -11,8 +11,8 @@ workflows:
       - name: Set up local build version
         script: |
           cd apps/enmeshed
-          # Set a dummy version for development
-          echo "version: 1.0.0+1" >> pubspec.yaml
+          # Update existing version in pubspec.yaml
+          sed -i.bak 's/^version:.*$/version: 1.0.0+1/' pubspec.yaml
 
       - name: Install melos
         script: dart pub global activate melos
