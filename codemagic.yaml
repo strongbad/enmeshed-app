@@ -14,8 +14,8 @@ workflows:
       cancel_previous_builds: true
     environment:
       groups:
-        - config-secrets
-        - webhook-secrets
+        - Flutter
+#        - webhook-secrets
 #      ios_signing:
 #        distribution_type: app_store
 #        bundle_identifier: eu.enmeshed.app
